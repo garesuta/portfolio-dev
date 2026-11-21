@@ -9,6 +9,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/), [SemVer](https://semver
 
 ### Changed
 - **main**: Satoshi is the only font; Inter Tight and the Google Fonts request removed
+- **build**: Pin Node to 24.x via package.json engines
 
 ## [0.1.0] - 2026-11-21
 
