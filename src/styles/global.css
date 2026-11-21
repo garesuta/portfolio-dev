@@ -1,0 +1,132 @@
+@font-face { font-family: Satoshi; src: url("/assets/Satoshi-Medium.woff") format("woff"); font-weight: 500; }
+@font-face { font-family: Satoshi; src: url("/assets/Satoshi-Black.woff") format("woff"); font-weight: 900; }
+:root { --header-h: 0px; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #000; color: #fff; font-family: "Inter Tight", system-ui, sans-serif; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- contact: fixed top-right, every beat ---- */
+.contact { position: fixed; top: 1.25rem; right: 1.5rem; z-index: 10; display: flex; gap: .5rem; align-items: center;
+  font: 500 .875rem/1 "Inter Tight", system-ui, sans-serif; color: #fff9; text-shadow: rgba(0,0,0,.6) 0 1px 4px; }
+.contact a { display: inline-flex; align-items: center; gap: .375rem; color: #fffd; text-decoration: none; padding: .5rem .25rem; transition: color .2s; }
+.contact svg { flex: none; filter: drop-shadow(rgba(0,0,0,.6) 0 1px 3px); }
+.contact a:hover, .contact a:focus-visible { color: #FFC77D; }
+@media not (min-width: 768px) { .contact { top: .75rem; right: 1rem; font-size: .8125rem; } }
+
+/* ================= Beat 1: hero (from openai-hero-extraction/prototype) ================= */
+main { position: relative; z-index: 1; }
+.hero { mask-image: linear-gradient(#000 85%, transparent); background: #000; display: grid; grid-template: minmax(0,1fr) / minmax(0,1fr); place-items: center; height: min(55svh, 110vw); position: relative; overflow: hidden; }
+.scene { --sky: url(/assets/sky-gradient.41yz1jpmosgz1.png) left bottom / 128px 42% repeat-x; background: #000308; width: 100%; height: 100%; position: relative; container-type: size;
+  mask-image: linear-gradient(transparent, #000 8%, #000 92%, transparent); }
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .scene::after { content: ""; pointer-events: none; background: var(--sky); position: absolute; inset: 0; }
+}
+@media (min-width: 48rem) {
+  .hero { height: calc(100svh - var(--header-h)); mask-image: linear-gradient(#000 91%, transparent); }
+  .hero .scrollHint { bottom: 6%; } /* below the blue stream */
+  .scene { aspect-ratio: 1358 / 764; height: auto; max-height: 100%;
+    mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); }
+}
+.type { color: #fff; z-index: 2; pointer-events: none; width: min(100%, 177.749cqh); height: min(100%, 56.2592cqw); margin: auto;
+  position: absolute; inset: 0; transform: translate(-.899%) scale(.75); container-type: inline-size; }
+/* name: two words flanking the centre gap, like Astra | Sol; sized down for 8 + 7 letters */
+.title { letter-spacing: -.02em; justify-content: space-between; align-items: center; margin: 0; font-size: 11cqw; font-weight: 700; line-height: .94;
+  display: flex; position: absolute; top: 47%; left: -.75%; right: .25%; transform: translateY(-50%); }
+.title span { transform-origin: 100% center; transform: scale(.824742); }
+.title span:last-child { transform-origin: 0 center; }
+.role { position: absolute; top: calc(47% + 7.8cqw); left: 50%; transform: translate(-50%, -50%); margin: 0; width: max-content;
+  font-size: 3.4cqw; font-weight: 500; letter-spacing: -.01em; line-height: 1; color: #fffc; }
+@media (min-width: 48rem) {
+  .type { opacity: 0; transition: opacity .504s ease-in-out; }
+  [data-stars-revealed="true"] ~ .type { opacity: 1; }
+}
+.scrollHint { position: absolute; bottom: 15%; left: 50%; transform: translate(-50%); margin: 0; z-index: 3; pointer-events: none;
+  color: rgba(250,250,250,.6); font-size: .875rem; font-weight: 500; }
+.field { isolation: isolate; aspect-ratio: 1358 / 764; background: #03101A; width: 100%; height: 100%; position: relative; overflow: hidden; container-type: size; }
+.field canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+@media (prefers-reduced-motion: no-preference) {
+  .field { opacity: 0; transition: opacity .72s ease-out; }
+  .field[data-ready="true"] { opacity: 1; }
+}
+.handles { z-index: 3; pointer-events: none; width: min(100%, 177.749cqh); height: min(100%, 56.2592cqw); margin: auto; position: absolute; inset: 0; }
+.handles span { aspect-ratio: 1; touch-action: none; cursor: grab; border-radius: 50%; width: max(44px, 4.5%); position: absolute; }
+.handles[data-ready="true"] span { pointer-events: auto; }
+.handles span:active { cursor: grabbing; }
+.sunHandle { top: 32.8534%; left: 63.2548%; transform: translate(-50%,-50%) translate(var(--gold-x,0px), var(--gold-y,0px)); }
+.starHandle { top: 69.3717%; left: 34.757%; transform: translate(-50%,-50%) translate(var(--blue-x,0px), var(--blue-y,0px)); }
+
+/* ================= Beat 2: converge (from g-mock) — fixed canvas, .converge is the scroll spacer ================= */
+.backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.backdrop canvas { display: block; width: 100%; height: 100%; }
+.ambient { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: plus-lighter; opacity: 0;
+  background: radial-gradient(ellipse farthest-corner at center, transparent 0%, color-mix(in srgb, #23435f 6.25%, transparent) 25%,
+    color-mix(in srgb, #23435f 25%, transparent) 50%, color-mix(in srgb, #23435f 56.25%, transparent) 75%, #23435f 100%); }
+.vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(rgba(0,0,0,0) 47%, rgba(0,0,0,.18) 72%, rgba(0,0,0,.78) 100%); }
+[data-static="true"] canvas { display: none; }
+.scene[data-still="true"] .type { opacity: 1; } /* hero fallback: plain dark field, name always visible */
+
+.chrome { position: fixed; inset: 0; z-index: 2; pointer-events: none; --copy-opacity: 1; }
+.chrome .frame { position: absolute; inset: 0; margin: 0 auto; max-width: 90rem; }
+.label { position: absolute; top: 50%; transform: translateY(-50%); margin: 0; color: #fafafa; user-select: none;
+  font-size: clamp(2.5rem, 4.45vw, 4rem); font-weight: 500; line-height: 1; letter-spacing: -.02em;
+  text-shadow: rgba(0,0,0,.65) 0 2px 6px, rgba(0,0,0,.45) 0 0 1.25rem; opacity: var(--copy-opacity); }
+.labelLeft { left: 2rem; }
+.labelRight { right: 2rem; }
+/* letters: same 44px slide + curve as the source, but toggled by scroll (reverses on scroll-up) */
+.letter { display: inline-block; opacity: 0; transform: translateX(var(--shift)); transition: opacity .4s, transform .4s cubic-bezier(.22, 1, .36, 1); }
+.chrome.in .letter { opacity: 1; transform: translate(0); transition-duration: 1s; transition-delay: var(--delay); }
+@media not (min-width: 768px) { .labelLeft { left: 1.5rem; top: 20%; } .labelRight { right: 1.5rem; top: 80%; } } /* narrow: above / below the G */
+
+/* ================= Beats 3–4: about + stack (from bombay-about-stack-extraction) ================= */
+#about, #skills, .timeline { font-family: Satoshi, Arial, Helvetica, sans-serif; }
+#about, .stack-wrap { max-width: 72rem; margin: 0 auto; padding-inline: 2rem; }
+#about { padding-block: 8rem; }
+#about h2, #my-stack h2, .timeline h2 { display: flex; align-items: center; gap: .75rem; margin: 0 0 1rem; color: rgb(23 241 209 / 80%);
+  font-size: 1.25rem; font-weight: 500; line-height: 1.75rem; }
+#about h2::before, #my-stack h2::before, .timeline h2::before { content: ""; width: 1.5rem; height: 1px; background: currentColor; }
+.bio .focus { color: #FFC77D; } /* the role leads; hero gold */
+.bio { margin: 0; font-size: clamp(1.75rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.05; }
+#skills { min-height: 100vh; padding-bottom: 6rem; display: flex; justify-content: center; align-items: center; }
+.stack-wrap { min-width: 0; padding-block: 5rem 30vh; }
+.row { display: grid; row-gap: 1rem; }
+.row + .row { margin-top: 3rem; }
+.category { margin: 0; font-size: 1.125rem; font-weight: 500; line-height: 1.75rem; color: #fff6; }
+#my-stack ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; }
+#my-stack li { display: flex; align-items: center; gap: .5rem; font-size: 1.5rem; font-weight: 800; line-height: 1; letter-spacing: -.025em;
+  text-transform: lowercase; color: #fffc; transition: color .3s cubic-bezier(.4,0,.2,1); }
+#my-stack li img { height: 1.25rem; width: auto; object-fit: contain; transition: opacity .3s cubic-bezier(.4,0,.2,1), transform .3s cubic-bezier(.4,0,.2,1); }
+#my-stack ul:hover li { color: #ffffff40; }
+#my-stack ul:hover img { opacity: .3; }
+#my-stack ul li:hover { color: #ffd074; }
+#my-stack ul li:hover img { opacity: 1; transform: rotate(-12deg) scale(1.25); }
+/* ---- Beats 5–6: experience + education (same grid as the stack: period | detail) ---- */
+.timeline { max-width: 72rem; margin: 0 auto; padding: 6rem 2rem; }
+#education { padding-bottom: 40vh; }
+.timeline h3 { margin: 0; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 900; letter-spacing: -.025em; line-height: 1.1; }
+.timeline .org { margin: .5rem 0 0; color: #fff9; font-size: 1.125rem; font-weight: 500; line-height: 1.4; }
+.timeline .what { margin: .75rem 0 0; max-width: 46rem; color: #fffc; font-size: 1.125rem; font-weight: 500; line-height: 1.55; }
+.school { display: flex; align-items: center; gap: 1.25rem; }
+.school img { height: 4rem; width: auto; flex: none; }
+@media (min-width: 640px) {
+  .job, .school { grid-column: span 9; }
+  #my-stack { max-width: 640px; }
+  .row { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .category { grid-column: span 3; padding-top: .5rem; }
+  #my-stack ul { grid-column: span 9; }
+}
+@media (min-width: 768px) { #my-stack { max-width: 768px; } }
+@media (min-width: 1024px) {
+  #my-stack { max-width: 1024px; }
+  #about { padding-block: 12rem; }
+  #about h2, #my-stack h2, .timeline h2 { margin-bottom: 3rem; }
+  .row + .row { margin-top: 5rem; }
+  #my-stack ul { gap: 1.25rem 2.5rem; }
+  #my-stack li { gap: .75rem; font-size: 3rem; }
+  #my-stack li img { height: 2.25rem; }
+}
+@media (min-width: 1280px) { #my-stack { max-width: 1280px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .letter, .chrome.in .letter { transition: none; }
+  #my-stack li, #my-stack li img { transition: none; }
+}
