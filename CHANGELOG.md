@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/), [SemVer](https://semver
 
 ## [Unreleased]
 
+### Added
+- **main**: Favicon set (ico, 16/32 PNG, apple-touch, Android icons) and web manifest
+
 ## [0.1.0] - 2026-11-21
 
 ### Added
