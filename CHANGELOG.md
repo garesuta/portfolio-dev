@@ -7,6 +7,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/), [SemVer](https://semver
 ### Added
 - **main**: Favicon set (ico, 16/32 PNG, apple-touch, Android icons) and web manifest
 
+### Changed
+- **main**: Satoshi is the only font; Inter Tight and the Google Fonts request removed
+
 ## [0.1.0] - 2026-11-21
 
 ### Added
